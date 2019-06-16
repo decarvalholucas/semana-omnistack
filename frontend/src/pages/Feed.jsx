@@ -23,10 +23,22 @@ class Feed extends Component {
     }
 
     registerToSocket = () => {
-        const socket = io('http://localhost:3333')
-        socket.on('post', newPost => {
+        const socket = io('http://192.168.0.106:3333')
+
+        //Espera o evento eventPost, criado no backend com o io.emit()
+        socket.on('eventPost', newPost => {
             this.setState({
                 feed: [newPost, ...this.state.feed]
+            })
+        })
+
+        //Espera o evento eventLike, criado no backend com o io.emit()
+        socket.on('eventLike', likedPost => {
+            console.log(likedPost)
+            this.setState({
+                feed: this.state.feed.map(post => 
+                    post._id === likedPost._id ? likedPost : post
+                )
             })
         })
     }
@@ -48,7 +60,7 @@ class Feed extends Component {
                             <img src={more} alt="Mais" />
                         </header>
 
-                        <img src={`http://localhost:3333/files/${post.image}`} alt="" />
+                        <img src={`http://192.168.0.106:3333/files/${post.image}`} alt="" />
 
                         <footer>
                             <div className="actions">

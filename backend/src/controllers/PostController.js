@@ -33,7 +33,7 @@ module.exports = {
             image: fileName
         })
 
-        req.io.emit('post', post)
+        req.io.emit('eventPost', post)
 
         return res.json(post)
     }
